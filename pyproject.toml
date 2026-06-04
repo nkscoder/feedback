@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "nkscoder-django-feedback"
-version = "1.0.1"
+version = "1.0.2"
 description = "nkscoder-django-feedback: open-source Django user feedback & AI analytics dashboard by Nitesh Kumar Singh (nkscoder) — forms, ratings, sentiment, and staff insights for any project."
 readme = "README.md"
 license = "MIT"
@@ -56,8 +56,8 @@ ai = ["openai>=1.0"]
 dev = ["pytest-django", "build", "twine"]
 
 [project.urls]
-Homepage = "https://github.com/nkscoder/feedback"
-Documentation = "https://github.com/nkscoder/feedback#readme"
+Homepage = "https://pypi.org/project/nkscoder-django-feedback/"
+Documentation = "https://github.com/nkscoder/feedback/blob/main/DOCUMENTATION.md"
 Repository = "https://github.com/nkscoder/feedback"
 "Bug Tracker" = "https://github.com/nkscoder/feedback/issues"
 "PyPI Profile" = "https://pypi.org/user/nkscoder/"

@@ -1,5 +1,10 @@
 # nkscoder-django-feedback
 
+[![PyPI](https://img.shields.io/pypi/v/nkscoder-django-feedback?label=PyPI&logo=pypi)](https://pypi.org/project/nkscoder-django-feedback/)
+[![Python](https://img.shields.io/pypi/pyversions/nkscoder-django-feedback)](https://pypi.org/project/nkscoder-django-feedback/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![nkscoder](https://img.shields.io/badge/author-Nitesh%20Kumar%20Singh%20(nkscoder)-blue)](https://nkscoder.in)
+
 **Open-source Django feedback plugin by [Nitesh Kumar Singh (nkscoder)](https://nkscoder.in)**
 
 Collect user feedback (authenticated or anonymous), enforce cooldown rules, and review submissions on an **AI analytics dashboard** with charts, sentiment keywords, and auto-generated insights.
@@ -10,8 +15,9 @@ Collect user feedback (authenticated or anonymous), enforce cooldown rules, and 
 | **Website** | [nkscoder.in](https://nkscoder.in) |
 | **GitHub** | [github.com/nkscoder/feedback](https://github.com/nkscoder/feedback) |
 | **PyPI** | [`nkscoder-django-feedback`](https://pypi.org/project/nkscoder-django-feedback/) |
+| **Meta install** | [`nkscoder[feedback]`](https://pypi.org/project/nkscoder/) on [PyPI @nkscoder](https://pypi.org/user/nkscoder/) |
 | **Django app** | `feedback` |
-| **Version** | 1.0.1 |
+| **Version** | 1.0.2 |
 | **License** | [MIT](LICENSE) |
 
 ---
@@ -22,13 +28,13 @@ Collect user feedback (authenticated or anonymous), enforce cooldown rules, and 
 
 Embed this form in any Django template (authenticated or guest users, optional rating & category):
 
-![Feedback form — nkscoder-django-feedback](docs/screenshots/feedback-form.png)
+![Feedback form — nkscoder-django-feedback](https://raw.githubusercontent.com/nkscoder/feedback/main/docs/screenshots/feedback-form.png)
 
 ### AI analytics dashboard
 
 Staff dashboard with charts, sentiment analysis, and auto-generated insights:
 
-![AI Feedback Dashboard — Nitesh Kumar Singh (nkscoder)](docs/screenshots/ai-dashboard.png)
+![AI Feedback Dashboard — Nitesh Kumar Singh (nkscoder)](https://raw.githubusercontent.com/nkscoder/feedback/main/docs/screenshots/ai-dashboard.png)
 
 > Replace screenshots: add your own PNGs under `docs/screenshots/` after customizing templates in your project.
 
@@ -189,7 +195,15 @@ FEEDBACK_SEO_DESCRIPTION = (
 
 ## Submit feedback (HTML form)
 
-![Example feedback form](docs/screenshots/feedback-form.png)
+![Example feedback form](https://raw.githubusercontent.com/nkscoder/feedback/main/docs/screenshots/feedback-form.png)
+
+**Ready-made template** (Bootstrap 5):
+
+```django
+{% include "feedback/submit_form.html" %}
+```
+
+Minimal HTML:
 
 ```html
 <form method="post" action="{% url 'feedback:submit_feedback' %}">
@@ -226,7 +240,7 @@ create_feedback(request, "Great UX!", category="praise", rating=5)
 
 Staff-only analytics built by **Nitesh Kumar Singh (nkscoder)**.
 
-![AI analytics dashboard](docs/screenshots/ai-dashboard.png)
+![AI analytics dashboard](https://raw.githubusercontent.com/nkscoder/feedback/main/docs/screenshots/ai-dashboard.png)
 
 | URL | Name | Access |
 |-----|------|--------|

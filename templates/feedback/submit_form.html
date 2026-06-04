@@ -1,0 +1,47 @@
+{# Reusable feedback form — nkscoder-django-feedback by Nitesh Kumar Singh (nkscoder) #}
+<div class="card shadow-sm">
+  <div class="card-body">
+    <h2 class="h5 card-title">Send feedback</h2>
+    {% if feedback_allowed is not None and not feedback_allowed %}
+      <p class="text-muted mb-0">You can submit again after the cooldown period.</p>
+    {% else %}
+    <form method="post" action="{% url 'feedback:submit_feedback' %}">
+      {% csrf_token %}
+      <div class="mb-3">
+        <label for="feedback-message" class="form-label">Your feedback</label>
+        <textarea id="feedback-message" name="feedback" class="form-control" rows="4" required
+                  placeholder="Tell us what you think…"></textarea>
+      </div>
+      <div class="row g-2 mb-3">
+        <div class="col-md-6">
+          <label for="feedback-name" class="form-label">Name</label>
+          <input id="feedback-name" name="name" type="text" class="form-control" placeholder="Optional">
+        </div>
+        <div class="col-md-6">
+          <label for="feedback-email" class="form-label">Email</label>
+          <input id="feedback-email" name="email" type="email" class="form-control" placeholder="Optional">
+        </div>
+      </div>
+      <div class="row g-2 mb-3">
+        <div class="col-md-4">
+          <label for="feedback-rating" class="form-label">Rating</label>
+          <select id="feedback-rating" name="rating" class="form-select">
+            <option value="">—</option>
+            <option value="5">5 — Excellent</option>
+            <option value="4">4</option>
+            <option value="3">3</option>
+            <option value="2">2</option>
+            <option value="1">1</option>
+          </select>
+        </div>
+        <div class="col-md-8">
+          <label for="feedback-category" class="form-label">Category</label>
+          <input id="feedback-category" name="category" type="text" class="form-control"
+                 placeholder="Bug / Feature / Praise">
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary">Send feedback</button>
+    </form>
+    {% endif %}
+  </div>
+</div>

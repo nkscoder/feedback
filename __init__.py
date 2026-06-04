@@ -6,7 +6,7 @@ Repository: https://github.com/nkscoder/feedback
 PyPI: https://pypi.org/project/nkscoder-django-feedback/
 """
 
-__version__ = "1.0.1"
+__version__ = "1.0.2"
 __author__ = "Nitesh Kumar Singh"
 __author_email__ = "contact@nkscoder.in"
 __license__ = "MIT"
