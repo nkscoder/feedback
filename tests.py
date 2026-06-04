@@ -1,6 +1,7 @@
 from datetime import timedelta
 from unittest.mock import MagicMock
 
+from django.contrib.sessions.backends.db import SessionStore
 from django.test import RequestFactory, TestCase
 from django.utils import timezone
 
@@ -33,23 +34,26 @@ class AnalyticsTests(TestCase):
 
 
 class ServicesTests(TestCase):
-    def test_feedback_allowed_no_cooldown_when_no_prior(self):
+    def _anonymous_request(self, session_key="abc123"):
         request = RequestFactory().get("/")
         request.user = MagicMock(is_authenticated=False)
-        request.session = {}
+        session = SessionStore(session_key=session_key)
+        if not session.session_key:
+            session.create()
+        request.session = session
+        return request
+
+    def test_feedback_allowed_no_cooldown_when_no_prior(self):
+        request = self._anonymous_request()
         self.assertTrue(is_feedback_allowed(request))
 
     def test_feedback_blocked_within_cooldown(self):
-        request = RequestFactory().get("/")
-        request.user = MagicMock(is_authenticated=False)
-        session = {}
-        session.create = lambda: None
-        session.session_key = "abc123"
-        request.session = session
+        request = self._anonymous_request()
+        session_key = request.session.session_key
 
         Feedback.objects.create(
             message="first",
-            session_key="abc123",
+            session_key=session_key,
             submitted_at=timezone.now() - timedelta(days=1),
         )
         self.assertFalse(is_feedback_allowed(request))

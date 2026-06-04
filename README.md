@@ -2,6 +2,8 @@
 
 [![PyPI](https://img.shields.io/pypi/v/nkscoder-django-feedback?label=PyPI&logo=pypi)](https://pypi.org/project/nkscoder-django-feedback/)
 [![Python](https://img.shields.io/pypi/pyversions/nkscoder-django-feedback)](https://pypi.org/project/nkscoder-django-feedback/)
+[![Django CI](https://github.com/nkscoder/feedback/actions/workflows/django.yml/badge.svg)](https://github.com/nkscoder/feedback/actions/workflows/django.yml)
+[![Pylint](https://github.com/nkscoder/feedback/actions/workflows/pylint.yml/badge.svg)](https://github.com/nkscoder/feedback/actions/workflows/pylint.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![nkscoder](https://img.shields.io/badge/author-Nitesh%20Kumar%20Singh%20(nkscoder)-blue)](https://nkscoder.in)
 
@@ -52,6 +54,7 @@ Staff dashboard with charts, sentiment analysis, and auto-generated insights:
 - [AI dashboard](#ai-dashboard)
 - [SEO & branding templates](#seo--branding-templates)
 - [Full documentation](#full-documentation)
+- [GitHub Actions CI](#github-actions-ci)
 - [Troubleshooting](#troubleshooting)
 - [About the author](#about-the-author)
 - [License](#license)
@@ -274,6 +277,28 @@ See **[DOCUMENTATION.md](DOCUMENTATION.md)** for:
 - Analytics & AI insight logic
 - Admin customization
 - Publishing to PyPI
+
+---
+
+## GitHub Actions CI
+
+Pre-configured workflows (see **[GITHUB_ACTIONS.md](GITHUB_ACTIONS.md)**):
+
+| Workflow | What it does |
+|----------|----------------|
+| **Django CI** | Tests on Python 3.10, 3.11, 3.12 |
+| **Python package** | Matrix build + tests |
+| **Pylint** | Code quality |
+| **Publish Python Package** | PyPI upload on GitHub Release |
+
+**Setup:** add secret `PYPI_API_TOKEN` in repo **Settings → Secrets → Actions**.
+
+```bash
+# Run locally like CI
+pip install -e ".[dev]"
+python ci/manage.py migrate --run-syncdb
+python ci/manage.py test feedback.tests
+```
 
 ---
 

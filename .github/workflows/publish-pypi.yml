@@ -1,7 +1,8 @@
-# Publish to PyPI on release or manual run.
-# Setup: GitHub → Settings → Secrets → PYPI_API_TOKEN
+# Publish Python Package to PyPI on release — GitHub suggested workflow
+# Setup: Settings → Secrets → PYPI_API_TOKEN (pypi-... token)
+# Author: Nitesh Kumar Singh (nkscoder)
 
-name: Publish to PyPI
+name: Publish Python Package
 
 on:
   release:
@@ -10,10 +11,14 @@ on:
 
 permissions:
   contents: read
+  id-token: write
 
 jobs:
   publish:
     runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/project/nkscoder-django-feedback/
     steps:
       - uses: actions/checkout@v4
 
@@ -24,12 +29,12 @@ jobs:
       - name: Install build tools
         run: python -m pip install --upgrade pip build twine
 
-      - name: Verify PyPI token secret
+      - name: Verify PyPI token
         env:
           TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
         run: |
           if [ -z "$TWINE_PASSWORD" ]; then
-            echo "::error::Missing secret PYPI_API_TOKEN"
+            echo "::error::Add PYPI_API_TOKEN in repo Settings → Secrets → Actions"
             exit 1
           fi
 

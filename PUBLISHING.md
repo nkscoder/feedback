@@ -37,7 +37,7 @@ twine upload --non-interactive dist/*
 1. Bump version in `pyproject.toml` and `feedback/__init__.py` (currently **1.0.1**).
 2. Commit and push to `main`.
 3. Create a GitHub **Release** (tag e.g. `v1.0.1`) — workflow publishes on `release: published`.
-4. Or: Actions → **Publish to PyPI** → **Run workflow**.
+4. Or: Actions → **Publish Python Package** → **Run workflow**.
 
 ---
 

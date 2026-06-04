@@ -53,7 +53,7 @@ dependencies = [
 
 [project.optional-dependencies]
 ai = ["openai>=1.0"]
-dev = ["pytest-django", "build", "twine"]
+dev = ["pytest-django", "build", "twine", "pylint", "pylint-django"]
 
 [project.urls]
 Homepage = "https://pypi.org/project/nkscoder-django-feedback/"
