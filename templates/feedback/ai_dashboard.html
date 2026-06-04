@@ -1,0 +1,180 @@
+{% extends base_template %}
+{% block title %}AI Feedback Dashboard{% endblock %}
+{% block nav_title %}AI Feedback Dashboard{% endblock %}
+{% block extra_head %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  .insight-card { border-left: 4px solid #0d6efd; }
+  .stat-value { font-size: 1.75rem; font-weight: 600; }
+</style>
+{% endblock %}
+{% block content %}
+<div class="container-fluid py-4 px-3">
+  <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
+    <div>
+      <h2 class="mb-1">AI Feedback Dashboard</h2>
+      <p class="text-muted mb-0">
+        {{ stats.period_count }} submissions in last {{ period_days }} days
+        · {{ stats.total_count }} all time
+        · insights: <span class="badge bg-secondary">{{ ai_insights_source }}</span>
+      </p>
+    </div>
+    <div class="btn-group">
+      <a href="?days=7" class="btn btn-sm {% if period_days == 7 %}btn-primary{% else %}btn-outline-primary{% endif %}">7d</a>
+      <a href="?days=30" class="btn btn-sm {% if period_days == 30 %}btn-primary{% else %}btn-outline-primary{% endif %}">30d</a>
+      <a href="?days=90" class="btn btn-sm {% if period_days == 90 %}btn-primary{% else %}btn-outline-primary{% endif %}">90d</a>
+      <a href="{% url 'feedback:ai_dashboard_api' %}?days={{ period_days }}" class="btn btn-sm btn-outline-secondary" target="_blank">JSON API</a>
+    </div>
+  </div>
+
+  <div class="row g-3 mb-4">
+    <div class="col-6 col-md-3">
+      <div class="card h-100"><div class="card-body">
+        <div class="text-muted small">Last 7 days</div>
+        <div class="stat-value">{{ stats.last_7_days }}</div>
+      </div></div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="card h-100"><div class="card-body">
+        <div class="text-muted small">Avg rating</div>
+        <div class="stat-value">{% if stats.avg_rating %}{{ stats.avg_rating }}/5{% else %}—{% endif %}</div>
+      </div></div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="card h-100"><div class="card-body">
+        <div class="text-muted small">Authenticated</div>
+        <div class="stat-value">{{ stats.authenticated_count }}</div>
+      </div></div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="card h-100"><div class="card-body">
+        <div class="text-muted small">Anonymous</div>
+        <div class="stat-value">{{ stats.anonymous_count }}</div>
+      </div></div>
+    </div>
+  </div>
+
+  <div class="row g-4 mb-4">
+    <div class="col-lg-8">
+      <div class="card insight-card h-100">
+        <div class="card-header bg-white fw-semibold">AI insights</div>
+        <ul class="list-group list-group-flush">
+          {% for line in ai_insights %}
+          <li class="list-group-item">{{ line }}</li>
+          {% empty %}
+          <li class="list-group-item text-muted">No insights yet.</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="card h-100">
+        <div class="card-header">Sentiment (keyword analysis)</div>
+        <div class="card-body"><canvas id="sentimentChart" height="180"></canvas></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-4 mb-4">
+    <div class="col-lg-6">
+      <div class="card h-100">
+        <div class="card-header">Submissions trend</div>
+        <div class="card-body"><canvas id="trendChart" height="200"></canvas></div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="card h-100">
+        <div class="card-header">Rating distribution</div>
+        <div class="card-body"><canvas id="ratingChart" height="200"></canvas></div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="card h-100">
+        <div class="card-header">By category</div>
+        <div class="card-body"><canvas id="categoryChart" height="200"></canvas></div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="card h-100">
+        <div class="card-header">By source / page</div>
+        <div class="card-body"><canvas id="sourceChart" height="200"></canvas></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">Recent feedback</div>
+    <div class="table-responsive">
+      <table class="table table-sm mb-0">
+        <thead>
+          <tr>
+            <th>When</th>
+            <th>From</th>
+            <th>Rating</th>
+            <th>Category</th>
+            <th>Source</th>
+            <th>Message</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for fb in recent_feedback %}
+          <tr>
+            <td class="text-nowrap small">{{ fb.submitted_at|date:"d M Y H:i" }}</td>
+            <td class="small">{{ fb.submitter_display }}</td>
+            <td>{% if fb.rating %}{{ fb.rating }}/5{% else %}—{% endif %}</td>
+            <td class="small">{{ fb.category|default:"—" }}</td>
+            <td class="small text-truncate" style="max-width:120px" title="{{ fb.source }}">{{ fb.source|default:"—" }}</td>
+            <td class="small">{{ fb.message|truncatechars:80 }}</td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="6" class="text-center text-muted p-4">No feedback in this period.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  if (typeof Chart === 'undefined') return;
+  function barChart(id, labels, values, color) {
+    const el = document.getElementById(id);
+    if (!el || !labels.length) return;
+    new Chart(el, {
+      type: 'bar',
+      data: { labels, datasets: [{ data: values, backgroundColor: color }] },
+      options: { responsive: true, plugins: { legend: { display: false } } }
+    });
+  }
+  function lineChart(id, labels, values) {
+    const el = document.getElementById(id);
+    if (!el || !labels.length) return;
+    new Chart(el, {
+      type: 'line',
+      data: { labels, datasets: [{ data: values, borderColor: '#0d6efd', fill: false, tension: 0.2 }] },
+      options: { responsive: true, plugins: { legend: { display: false } } }
+    });
+  }
+  function doughnut(id, labels, values) {
+    const el = document.getElementById(id);
+    if (!el || !labels.length) return;
+    new Chart(el, {
+      type: 'doughnut',
+      data: {
+        labels,
+        datasets: [{ data: values, backgroundColor: ['#198754', '#ffc107', '#dc3545', '#6c757d'] }]
+      },
+      options: { responsive: true }
+    });
+  }
+  lineChart('trendChart', {{ trend_labels_json|safe }}, {{ trend_values_json|safe }});
+  barChart('ratingChart', {{ rating_labels_json|safe }}, {{ rating_values_json|safe }}, '#0d6efd');
+  barChart('categoryChart', {{ category_labels_json|safe }}, {{ category_values_json|safe }}, '#198754');
+  barChart('sourceChart', {{ source_labels_json|safe }}, {{ source_values_json|safe }}, '#6f42c1');
+  doughnut('sentimentChart', {{ sentiment_labels_json|safe }}, {{ sentiment_values_json|safe }});
+});
+</script>
+{% endblock %}

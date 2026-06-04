@@ -1,0 +1,74 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nkscoder-django-feedback"
+version = "1.0.0"
+description = "Generic Django feedback app with AI analytics dashboard — by Nitesh Kumar Singh (nkscoder). Anonymous or authenticated submissions for any project."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.10"
+authors = [
+    { name = "Nitesh Kumar Singh (nkscoder)", email = "contact@nkscoder.in" },
+]
+maintainers = [
+    { name = "Nitesh Kumar Singh (nkscoder)", email = "contact@nkscoder.in" },
+]
+keywords = [
+    "django",
+    "feedback",
+    "user-feedback",
+    "survey",
+    "analytics",
+    "ai-dashboard",
+    "nkscoder",
+    "nitesh-kumar-singh",
+    "django-feedback",
+    "customer-feedback",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Framework :: Django",
+    "Framework :: Django :: 4.2",
+    "Framework :: Django :: 5.0",
+    "Framework :: Django :: 5.1",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = [
+    "Django>=4.2",
+]
+
+[project.optional-dependencies]
+ai = ["openai>=1.0"]
+dev = ["pytest-django", "build", "twine"]
+
+[project.urls]
+Homepage = "https://github.com/nkscoder/feedback"
+Documentation = "https://github.com/nkscoder/feedback#readme"
+Repository = "https://github.com/nkscoder/feedback"
+"Bug Tracker" = "https://github.com/nkscoder/feedback/issues"
+"PyPI Profile" = "https://pypi.org/user/nkscoder/"
+"Author Website" = "https://nkscoder.in"
+"Author GitHub" = "https://github.com/nkscoder"
+"LinkedIn" = "https://www.linkedin.com/in/nitesh-kumar-singh-897437a2/"
+
+[tool.setuptools]
+package-dir = { "feedback" = "." }
+packages = [
+    "feedback",
+    "feedback.migrations",
+]
+
+[tool.setuptools.package-data]
+feedback = [
+    "templates/feedback/**/*",
+    "migrations/*.py",
+]
