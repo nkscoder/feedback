@@ -1,3 +1,12 @@
-"""nkscoder-django-feedback — generic Django feedback app by Nitesh Kumar Singh (nkscoder)."""
+"""nkscoder-django-feedback — generic Django feedback app.
 
-__version__ = "1.0.0"
+Author: Nitesh Kumar Singh (nkscoder)
+Homepage: https://nkscoder.in
+Repository: https://github.com/nkscoder/feedback
+PyPI: https://pypi.org/project/nkscoder-django-feedback/
+"""
+
+__version__ = "1.0.1"
+__author__ = "Nitesh Kumar Singh"
+__author_email__ = "contact@nkscoder.in"
+__license__ = "MIT"

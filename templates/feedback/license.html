@@ -1,0 +1,33 @@
+{% extends base_template %}
+{% block title %}License — {{ feedback_package_name }}{% endblock %}
+{% block nav_title %}MIT License{% endblock %}
+{% block content %}
+<div class="container py-4" style="max-width: 52rem;">
+  <h1 class="h3 mb-2">MIT License</h1>
+  <p class="lead text-muted">
+    <strong>{{ feedback_package_name }}</strong> is open-source software by
+    <strong>{{ feedback_author_name }}</strong>
+    (<a href="{{ feedback_github_url }}" rel="noopener noreferrer">{{ feedback_author_handle }}</a>).
+  </p>
+
+  <div class="card mb-4">
+    <div class="card-body">
+      <p class="mb-2"><strong>Copyright © 2020–2026 Nitesh Kumar Singh (nkscoder)</strong></p>
+      <p class="mb-0">
+        <a href="{{ feedback_homepage_url }}">{{ feedback_homepage_url }}</a> ·
+        <a href="{{ feedback_github_url }}">{{ feedback_github_url }}</a> ·
+        <a href="{{ feedback_pypi_url }}">PyPI</a>
+      </p>
+    </div>
+  </div>
+
+  <pre class="bg-white border p-3 rounded small" style="white-space: pre-wrap;">{{ feedback_license_text }}</pre>
+
+  <p class="mt-4">
+    Maintainer: <strong>Nitesh Kumar Singh</strong> — brand <strong>nkscoder</strong>.
+    Report issues on <a href="{{ feedback_github_url }}/issues">GitHub Issues</a>.
+  </p>
+
+  <a href="{% url 'feedback:ai_dashboard' %}" class="btn btn-outline-primary btn-sm">← AI dashboard</a>
+</div>
+{% endblock %}

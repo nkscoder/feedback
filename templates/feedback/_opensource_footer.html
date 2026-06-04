@@ -1,0 +1,19 @@
+<footer class="feedback-oss-footer border-top mt-4 pt-3 pb-2 text-muted small" role="contentinfo">
+  <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+    <span>
+      <strong>{{ feedback_package_name }}</strong> v{{ feedback_package_version }} —
+      open source by <strong>{{ feedback_author_name }}</strong>
+      (<a href="{{ feedback_homepage_url }}" target="_blank" rel="noopener noreferrer">{{ feedback_author_handle }}</a>)
+    </span>
+    <span class="d-flex flex-wrap gap-3">
+      <a href="{{ feedback_github_url }}" target="_blank" rel="noopener noreferrer" title="GitHub — nkscoder feedback">GitHub</a>
+      <a href="{{ feedback_pypi_url }}" target="_blank" rel="noopener noreferrer" title="PyPI — nkscoder-django-feedback">PyPI</a>
+      <a href="{% url 'feedback:license' %}" title="MIT License — Nitesh Kumar Singh">License</a>
+      <a href="{{ feedback_homepage_url }}" target="_blank" rel="noopener noreferrer">nkscoder.in</a>
+    </span>
+  </div>
+  <p class="mb-0 mt-1">
+    Django feedback &amp; AI analytics by Nitesh Kumar Singh · nkscoder ·
+    <a href="{{ feedback_github_url }}" target="_blank" rel="noopener noreferrer">nkscoder/feedback</a>
+  </p>
+</footer>

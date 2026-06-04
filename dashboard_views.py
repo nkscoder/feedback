@@ -15,6 +15,15 @@ def _login_required(view):
     return login_required(login_url=get_setting("LOGIN_URL"))(view)
 
 
+def license_page(request):
+    """Public MIT license page (SEO-friendly, open source by nkscoder)."""
+    return render(
+        request,
+        "feedback/license.html",
+        {"base_template": get_setting("BASE_TEMPLATE")},
+    )
+
+
 @_login_required
 @staff_required
 def ai_dashboard(request):

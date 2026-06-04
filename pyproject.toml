@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "nkscoder-django-feedback"
-version = "1.0.0"
-description = "Generic Django feedback app with AI analytics dashboard — by Nitesh Kumar Singh (nkscoder). Anonymous or authenticated submissions for any project."
+version = "1.0.1"
+description = "nkscoder-django-feedback: open-source Django user feedback & AI analytics dashboard by Nitesh Kumar Singh (nkscoder) — forms, ratings, sentiment, and staff insights for any project."
 readme = "README.md"
 license = "MIT"
 license-files = ["LICENSE"]
@@ -24,9 +24,14 @@ keywords = [
     "analytics",
     "ai-dashboard",
     "nkscoder",
+    "nkscoder-django-feedback",
+    "Nitesh Kumar Singh",
     "nitesh-kumar-singh",
     "django-feedback",
     "customer-feedback",
+    "sentiment-analysis",
+    "open-source",
+    "django-plugin",
 ]
 classifiers = [
     "Development Status :: 4 - Beta",

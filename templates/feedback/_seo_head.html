@@ -1,0 +1,44 @@
+{# SEO — nkscoder-django-feedback by Nitesh Kumar Singh (nkscoder) #}
+<meta name="description" content="{{ feedback_seo_description }}">
+<meta name="keywords" content="{{ feedback_seo_keywords }}">
+<meta name="author" content="{{ feedback_author_name }} ({{ feedback_author_handle }})">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="{{ feedback_canonical_url }}">
+<meta property="og:type" content="website">
+<meta property="og:title" content="{{ feedback_seo_title }}">
+<meta property="og:description" content="{{ feedback_seo_description }}">
+<meta property="og:site_name" content="{{ feedback_seo_site_name }}">
+<meta property="og:url" content="{{ feedback_canonical_url }}">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="{{ feedback_seo_title }}">
+<meta name="twitter:description" content="{{ feedback_seo_description }}">
+<meta name="twitter:creator" content="@{{ feedback_author_handle }}">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "{{ feedback_package_name }}",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Cross-platform",
+  "description": "{{ feedback_seo_description|escapejs }}",
+  "url": "{{ feedback_github_url }}",
+  "downloadUrl": "{{ feedback_pypi_url }}",
+  "author": {
+    "@type": "Person",
+    "name": "{{ feedback_author_name }}",
+    "alternateName": "{{ feedback_author_handle }}",
+    "url": "{{ feedback_homepage_url }}"
+  },
+  "maintainer": {
+    "@type": "Person",
+    "name": "Nitesh Kumar Singh",
+    "alternateName": "nkscoder"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "license": "{{ feedback_license_url }}"
+}
+</script>

@@ -1,28 +1,49 @@
 # nkscoder-django-feedback
 
-**Author:** [Nitesh Kumar Singh (nkscoder)](https://nkscoder.in)
+**Open-source Django feedback plugin by [Nitesh Kumar Singh (nkscoder)](https://nkscoder.in)**
 
-Generic, open-source Django feedback app for **any Django project** — authenticated or anonymous users, cooldown rules, and an **AI analytics dashboard** (rule-based insights + optional OpenAI summaries).
+Collect user feedback (authenticated or anonymous), enforce cooldown rules, and review submissions on an **AI analytics dashboard** with charts, sentiment keywords, and auto-generated insights.
 
 | | |
 |---|---|
-| **PyPI package** | `nkscoder-django-feedback` |
+| **Author / Maintainer** | [Nitesh Kumar Singh (nkscoder)](https://nkscoder.in) |
+| **Website** | [nkscoder.in](https://nkscoder.in) |
+| **GitHub** | [github.com/nkscoder/feedback](https://github.com/nkscoder/feedback) |
+| **PyPI** | [`nkscoder-django-feedback`](https://pypi.org/project/nkscoder-django-feedback/) |
 | **Django app** | `feedback` |
-| **Version** | 1.0.0 |
-| **License** | MIT |
-| **Repository** | https://github.com/nkscoder/feedback |
+| **Version** | 1.0.1 |
+| **License** | [MIT](LICENSE) |
+
+---
+
+## Table of contents
+
+- [Features](#features)
+- [Requirements](#requirements)
+- [Install](#install)
+- [Quick setup](#quick-setup)
+- [Configuration](#configuration)
+- [Submit feedback](#submit-feedback-html-form)
+- [AI dashboard](#ai-dashboard)
+- [SEO & branding templates](#seo--branding-templates)
+- [Full documentation](#full-documentation)
+- [Troubleshooting](#troubleshooting)
+- [About the author](#about-the-author)
+- [License](#license)
 
 ---
 
 ## Features
 
-- Submit feedback as logged-in users or guests (name / email)
-- Configurable cooldown (`FEEDBACK_COOLDOWN_DAYS`)
-- Star ratings (1–5), categories, page source, generic `link_type` / `link_id`
-- Django admin list & search
-- **AI dashboard** (`/feedback/dashboard/`) — charts, sentiment, trend, auto-generated insights
-- JSON API for dashboards (`/feedback/dashboard/api/`)
-- Optional OpenAI summaries (`pip install nkscoder-django-feedback[ai]`)
+- **Generic** — works in any Django 4.2+ project; no host-app coupling
+- **Authenticated or anonymous** submissions (`user`, `name`, `email`, `session_key`)
+- **Star ratings** (1–5), **category**, **source** (page/route), `link_type` / `link_id`
+- **Cooldown** per user or anonymous session (`FEEDBACK_COOLDOWN_DAYS`)
+- **Django admin** — search, filters, list display
+- **AI dashboard** (staff) — trends, ratings, sentiment, insight bullets, Chart.js
+- **JSON API** — `/feedback/dashboard/api/` for external tools
+- **Optional OpenAI** summaries (`[ai]` extra)
+- **SEO-ready pages** — meta tags, Open Graph, JSON-LD (Schema.org), public license page
 
 ---
 
@@ -37,7 +58,7 @@ Generic, open-source Django feedback app for **any Django project** — authenti
 
 ## Install
 
-### From PyPI
+### From PyPI (recommended)
 
 ```bash
 pip install nkscoder-django-feedback
@@ -51,7 +72,7 @@ cd feedback
 pip install -e .
 ```
 
-### Optional: OpenAI summaries
+### Optional: OpenAI insight summaries
 
 ```bash
 pip install "nkscoder-django-feedback[ai]"
@@ -61,7 +82,7 @@ pip install "nkscoder-django-feedback[ai]"
 
 ## Quick setup
 
-### 1. Add to `INSTALLED_APPS`
+### 1. `INSTALLED_APPS`
 
 ```python
 INSTALLED_APPS = [
@@ -70,42 +91,71 @@ INSTALLED_APPS = [
 ]
 ```
 
-### 2. Run migrations
+### 2. Context processor (SEO / branding on dashboard pages)
+
+```python
+TEMPLATES = [
+    {
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "OPTIONS": {
+            "context_processors": [
+                # ...
+                "feedback.context_processors.feedback_open_source",
+            ],
+        },
+    },
+]
+```
+
+### 3. Migrations
 
 ```bash
 python manage.py migrate feedback
 ```
 
-### 3. Include URLs
+### 4. URLs
 
 ```python
-# project/urls.py
 from django.urls import path, include
 
 urlpatterns = [
-    # ...
     path("feedback/", include("feedback.urls")),
 ]
 ```
 
-### 4. Settings (optional)
+---
+
+## Configuration
+
+All settings use the `FEEDBACK_` prefix. Defaults are in `feedback/conf.py`.
+
+| Setting | Default | Description |
+|---------|---------|-------------|
+| `FEEDBACK_COOLDOWN_DAYS` | `7` | Days between submissions (`0` = no limit) |
+| `FEEDBACK_REQUIRE_AUTH` | `False` | Login required to submit |
+| `FEEDBACK_REQUIRE_EMAIL` | `False` | Email required for guests |
+| `FEEDBACK_MESSAGE_MAX_LENGTH` | `5000` | Max message length |
+| `FEEDBACK_SUBMIT_REDIRECT` | `"/"` | Path or URL name after submit |
+| `FEEDBACK_BASE_TEMPLATE` | `feedback/base.html` | Base template for dashboard |
+| `FEEDBACK_LOGIN_URL` | `"login"` | Login URL for staff views |
+| `FEEDBACK_DASHBOARD_DAYS` | `30` | Default analytics window |
+| `FEEDBACK_OPENAI_API_KEY` | `""` | Optional LLM summaries |
+| `FEEDBACK_AUTHOR_NAME` | `Nitesh Kumar Singh` | Template / SEO author |
+| `FEEDBACK_AUTHOR_HANDLE` | `nkscoder` | Brand handle |
+| `FEEDBACK_GITHUB_URL` | `https://github.com/nkscoder/feedback` | Repo link |
+| `FEEDBACK_HOMEPAGE_URL` | `https://nkscoder.in` | Author site |
+| `FEEDBACK_SEO_DESCRIPTION` | (see `conf.py`) | Meta description |
+| `FEEDBACK_SEO_KEYWORDS` | (see `conf.py`) | Meta keywords |
+
+Example:
 
 ```python
-# Cooldown & submission
-FEEDBACK_COOLDOWN_DAYS = 7          # 0 = no limit
-FEEDBACK_REQUIRE_AUTH = False
-FEEDBACK_REQUIRE_EMAIL = False
-FEEDBACK_MESSAGE_MAX_LENGTH = 5000
-FEEDBACK_SUBMIT_REDIRECT = "/"      # or URL name e.g. "home"
-
-# AI dashboard
-FEEDBACK_BASE_TEMPLATE = "feedback/base.html"
-FEEDBACK_LOGIN_URL = "login"
-FEEDBACK_DASHBOARD_DAYS = 30
-
-# Optional OpenAI (needs [ai] extra)
-FEEDBACK_OPENAI_API_KEY = ""        # or env var via django-environ
-FEEDBACK_OPENAI_MODEL = "gpt-4o-mini"
+FEEDBACK_COOLDOWN_DAYS = 7
+FEEDBACK_SUBMIT_REDIRECT = "home"
+FEEDBACK_SEO_DESCRIPTION = (
+    "Customer feedback for MyApp — powered by nkscoder-django-feedback "
+    "by Nitesh Kumar Singh (nkscoder)."
+)
 ```
 
 ---
@@ -115,106 +165,111 @@ FEEDBACK_OPENAI_MODEL = "gpt-4o-mini"
 ```html
 <form method="post" action="{% url 'feedback:submit_feedback' %}">
   {% csrf_token %}
-  <textarea name="feedback" required></textarea>
+  <textarea name="feedback" required placeholder="Your feedback…"></textarea>
   <input name="name" placeholder="Name">
   <input name="email" type="email" placeholder="Email">
   <select name="rating">
     <option value="">Rating</option>
-    <option value="5">5</option>
+    <option value="5">5 — Excellent</option>
     <option value="4">4</option>
   </select>
-  <input name="category" placeholder="Bug / Feature / Other">
+  <input name="category" placeholder="Bug / Feature / Praise">
   <button type="submit">Send feedback</button>
 </form>
 ```
 
-In views/templates, expose whether submission is allowed:
+**Python helpers:**
 
 ```python
-from feedback.services import is_feedback_allowed
-
-def my_view(request):
-    return render(request, "page.html", {
-        "feedback_allowed": is_feedback_allowed(request),
-    })
-```
-
-Or use the bundled helper:
-
-```python
+from feedback.services import is_feedback_allowed, create_feedback
 from feedback.views import get_feedback_context
 
+# Template context
 context = {**get_feedback_context(request)}
-```
 
-Programmatic create:
-
-```python
-from feedback.services import create_feedback
-
-create_feedback(request, "Love the new UI!", category="praise", rating=5)
+# Programmatic
+create_feedback(request, "Great UX!", category="praise", rating=5)
 ```
 
 ---
 
 ## AI dashboard
 
-Staff-only page with Chart.js analytics and insight bullets.
+Staff-only analytics built by **Nitesh Kumar Singh (nkscoder)**.
 
-| URL | Name |
-|-----|------|
-| `/feedback/dashboard/` | `feedback:ai_dashboard` |
-| `/feedback/dashboard/api/?days=30` | `feedback:ai_dashboard_api` |
+| URL | Name | Access |
+|-----|------|--------|
+| `/feedback/dashboard/` | `feedback:ai_dashboard` | Staff |
+| `/feedback/dashboard/api/?days=30` | `feedback:ai_dashboard_api` | Staff |
+| `/feedback/license/` | `feedback:license` | Public (SEO) |
 
-**Insights (default):** rule-based analysis — volume trends, ratings, sentiment keywords, top categories/sources.
-
-**With OpenAI:** set `FEEDBACK_OPENAI_API_KEY` and install `[ai]` extra for LLM-written summary bullets.
+**Default insights:** rule-based (volume, ratings, sentiment keywords, categories).  
+**With OpenAI:** `FEEDBACK_OPENAI_API_KEY` + `pip install "nkscoder-django-feedback[ai]"`.
 
 ---
 
-## Project layout
+## SEO & branding templates
 
-```
-feedback/
-├── __init__.py          # version
-├── models.py
-├── services.py
-├── analytics.py         # AI insights & chart data
-├── dashboard_views.py
-├── conf.py
-├── urls.py
-├── templates/feedback/
-│   ├── base.html
-│   └── ai_dashboard.html
-├── migrations/
-├── pyproject.toml
-└── README.md
-```
+Included for discoverability and attribution:
+
+- `feedback/_seo_head.html` — description, keywords, author, Open Graph, Twitter Card, JSON-LD `SoftwareApplication`
+- `feedback/_opensource_footer.html` — links to GitHub, PyPI, License, [nkscoder.in](https://nkscoder.in)
+- `feedback/license.html` — public MIT license page
+
+Override copy via `FEEDBACK_SEO_*` and `FEEDBACK_AUTHOR_*` settings.
+
+---
+
+## Full documentation
+
+See **[DOCUMENTATION.md](DOCUMENTATION.md)** for:
+
+- Data model reference
+- Services API
+- Analytics & AI insight logic
+- Admin customization
+- Publishing to PyPI
+
+---
+
+## Troubleshooting
+
+| Issue | Fix |
+|-------|-----|
+| Empty SEO meta on dashboard | Add `feedback.context_processors.feedback_open_source` |
+| `TemplateSyntaxError` on `_seo_head.html` | Same — context processor required |
+| Redirect after submit fails | Set `FEEDBACK_SUBMIT_REDIRECT` to a valid path or URL name |
+| Guests submit too often | Lower `FEEDBACK_COOLDOWN_DAYS` or set `FEEDBACK_REQUIRE_AUTH` |
+| No OpenAI insights | Install `[ai]` extra and set `FEEDBACK_OPENAI_API_KEY` |
+
+---
+
+## About the author
+
+**Nitesh Kumar Singh (nkscoder)** builds reusable Django packages at **[nkscoder.in](https://nkscoder.in)** — including ticket systems, activity monitors, and this feedback plugin.
+
+- **GitHub:** https://github.com/nkscoder  
+- **PyPI:** https://pypi.org/user/nkscoder/  
+- **LinkedIn:** https://www.linkedin.com/in/nitesh-kumar-singh-897437a2/
+
+For integration help, custom dashboards, or enterprise extensions, visit [https://nkscoder.in](https://nkscoder.in).
+
+---
+
+## License
+
+Copyright © 2020–2026 [Nitesh Kumar Singh (nkscoder)](https://nkscoder.in).
+
+Released under the [MIT License](LICENSE). You may use, copy, modify, and distribute this software with attribution to **Nitesh Kumar Singh (nkscoder)**.
 
 ---
 
 ## Publish to PyPI
 
-See **[PUBLISHING.md](PUBLISHING.md)**.
+Maintainer: **nkscoder**. See **[PUBLISHING.md](PUBLISHING.md)**.
 
 ```bash
 pip install build twine
 python -m build
 twine upload dist/*
 ```
-
-GitHub Actions workflow: `.github/workflows/publish.yml` (secret `PYPI_API_TOKEN`).
-
----
-
-## Links
-
-- **PyPI:** https://pypi.org/project/nkscoder-django-feedback/
-- **Author:** https://nkscoder.in
-- **GitHub:** https://github.com/nkscoder
-
----
-
-## License
-
-MIT — see [LICENSE](LICENSE).
