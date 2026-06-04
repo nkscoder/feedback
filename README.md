@@ -83,6 +83,14 @@ Staff dashboard with charts, sentiment analysis, and auto-generated insights:
 pip install nkscoder-django-feedback
 ```
 
+### Via [nkscoder](https://pypi.org/project/nkscoder/) meta package
+
+```bash
+pip install "nkscoder[feedback]"
+# or all @nkscoder Django packages:
+pip install "nkscoder[all]"
+```
+
 ### From GitHub
 
 ```bash
