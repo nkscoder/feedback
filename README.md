@@ -1,5 +1,8 @@
 # nkscoder-django-feedback
 
+> **Django user feedback + AI dashboard** — by [Nitesh Kumar Singh (nkscoder)](https://nkscoder.in)  
+> `pip install nkscoder-django-feedback` · [PyPI](https://pypi.org/project/nkscoder-django-feedback/) · [Docs](DOCUMENTATION.md) · [GitHub About setup](.github/REPOSITORY_ABOUT.md)
+
 [![PyPI](https://img.shields.io/pypi/v/nkscoder-django-feedback?label=PyPI&logo=pypi)](https://pypi.org/project/nkscoder-django-feedback/)
 [![Python](https://img.shields.io/pypi/pyversions/nkscoder-django-feedback)](https://pypi.org/project/nkscoder-django-feedback/)
 [![Django CI](https://github.com/nkscoder/feedback/actions/workflows/django.yml/badge.svg)](https://github.com/nkscoder/feedback/actions/workflows/django.yml)
@@ -292,6 +295,8 @@ Pre-configured workflows (see **[GITHUB_ACTIONS.md](GITHUB_ACTIONS.md)**):
 | **Publish Python Package** | PyPI upload on GitHub Release |
 
 **Setup:** add secret `PYPI_API_TOKEN` in repo **Settings → Secrets → Actions**.
+
+**GitHub About sidebar empty?** See **[.github/REPOSITORY_ABOUT.md](.github/REPOSITORY_ABOUT.md)** or run `./scripts/update-github-about.sh` after `gh auth login`.
 
 ```bash
 # Run locally like CI
