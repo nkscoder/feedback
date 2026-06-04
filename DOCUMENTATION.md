@@ -11,6 +11,15 @@
 
 `nkscoder-django-feedback` is a self-contained Django application for collecting and analyzing user feedback. It is designed by **Nitesh Kumar Singh** under the **nkscoder** brand as a plug-and-play module for any Django project.
 
+### Screenshots
+
+| UI | Preview |
+|----|---------|
+| Feedback form | ![Form](../docs/screenshots/feedback-form.png) |
+| AI dashboard | ![Dashboard](../docs/screenshots/ai-dashboard.png) |
+
+See [docs/screenshots/README.md](docs/screenshots/README.md) to replace with captures from your project.
+
 ---
 
 ## Installation reference

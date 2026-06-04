@@ -16,8 +16,27 @@ Collect user feedback (authenticated or anonymous), enforce cooldown rules, and 
 
 ---
 
+## Screenshots
+
+### Feedback form
+
+Embed this form in any Django template (authenticated or guest users, optional rating & category):
+
+![Feedback form — nkscoder-django-feedback](docs/screenshots/feedback-form.png)
+
+### AI analytics dashboard
+
+Staff dashboard with charts, sentiment analysis, and auto-generated insights:
+
+![AI Feedback Dashboard — Nitesh Kumar Singh (nkscoder)](docs/screenshots/ai-dashboard.png)
+
+> Replace screenshots: add your own PNGs under `docs/screenshots/` after customizing templates in your project.
+
+---
+
 ## Table of contents
 
+- [Screenshots](#screenshots)
 - [Features](#features)
 - [Requirements](#requirements)
 - [Install](#install)
@@ -162,6 +181,8 @@ FEEDBACK_SEO_DESCRIPTION = (
 
 ## Submit feedback (HTML form)
 
+![Example feedback form](docs/screenshots/feedback-form.png)
+
 ```html
 <form method="post" action="{% url 'feedback:submit_feedback' %}">
   {% csrf_token %}
@@ -196,6 +217,8 @@ create_feedback(request, "Great UX!", category="praise", rating=5)
 ## AI dashboard
 
 Staff-only analytics built by **Nitesh Kumar Singh (nkscoder)**.
+
+![AI analytics dashboard](docs/screenshots/ai-dashboard.png)
 
 | URL | Name | Access |
 |-----|------|--------|
